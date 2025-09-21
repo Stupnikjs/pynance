@@ -52,18 +52,25 @@ def klinesToDataFrame(klines):
     return df
 
 
-data = klinesData(client=client, pair="BTCUSDC", interval="1w")
+data = klinesData(client=client, pair="ETHBTC", interval="1w")
 df = klinesToDataFrame(data)
-
-
-
+df['EMA_short'] =df['Close'].ewm(span=9, adjust=False).mean()
+df['EMA_long'] =df['Close'].ewm(span=21, adjust=False).mean()
 
 
 # Print the head of the DataFrame to show the result
 print("\nDataFrame created successfully:")
 
+fig, ax = plt.subplots()
+fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(10, 8), gridspec_kw={'height_ratios': [9, 1]})
 
-plt.plot(df['Close time'], df['Close'])
+ax1.plot(df['Close time'], df['Close'], color='blue', label='Closing Price')
+ax1.plot(df['Close time'], df['EMA_short'], color='yellow', label='EMA_short')
+ax1.plot(df['Close time'], df['EMA_long'], color='black', label='EMA_long')
+
+ax2.bar(df['Close time'], df['Volume'], width=5, color='orange', label='Volume')
+
+
 plt.show()
 
 
