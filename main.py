@@ -1,5 +1,6 @@
 from binance_sdk_spot.spot import Spot,ConfigurationRestAPI
 import pandas as pd
+from pandas import DataFrame 
 import matplotlib.pyplot as plt
 
 
@@ -20,7 +21,7 @@ def klinesData(client, pair, interval):
     return klines_data.data()
 
 
-def klinesToDataFrame(klines): 
+def klinesToDataFrame(klines) -> DataFrame: 
     columns = [
         'Open time',
         'Open',
@@ -51,16 +52,23 @@ def klinesToDataFrame(klines):
     df[numeric_cols] = df[numeric_cols].astype(float)
     return df
 
+def closePeak(df) -> DataFrame: 
+    rolling_max = df['Close'].rolling(window=10, center=True).max()
+    df['isThereClosePeak'] = df['Close'] == rolling_max
+    return df 
+
 
 data = klinesData(client=client, pair="ETHBTC", interval="1w")
 df = klinesToDataFrame(data)
 df['EMA_short'] =df['Close'].ewm(span=9, adjust=False).mean()
 df['EMA_long'] =df['Close'].ewm(span=21, adjust=False).mean()
+df = closePeak(df)
 
-
+print(df.loc[0 : 100 , "isThereClosePeak" ])
 # Print the head of the DataFrame to show the result
 print("\nDataFrame created successfully:")
 
+"""
 fig, ax = plt.subplots()
 fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(10, 8), gridspec_kw={'height_ratios': [9, 1]})
 
@@ -73,4 +81,4 @@ ax2.bar(df['Close time'], df['Volume'], width=5, color='orange', label='Volume')
 
 plt.show()
 
-
+"""
