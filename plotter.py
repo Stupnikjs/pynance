@@ -14,20 +14,16 @@ def plot_price_vol(df):
     plt.show(block=True)
 
 
-def show_max_points(df):
-    max = df['Close'].rolling(window=50, center=True).max()
-    df['max'] = df['Close'] == max
+def show_max_points(peaks, df):
 
-
-
+    peaks_values = df['Close'].iloc[peaks]
     plt.figure(figsize=(12, 6))
 
     # Plot the 'Close' price curve as a blue line
     plt.plot(df.index, df['Close'], label='Price', color='blue')
 
     # Plot the points where the price is the rolling maximum as red dots
-    max_points = df[df['max']]
-    plt.scatter(max_points.index, max_points['Close'], color='red', s=50, zorder=5, label='Rolling Max Points')
+    plt.scatter(df.index[peaks], peaks_values, color='red', s=50, zorder=5, label='Rolling Max Points')
 
     # Add labels, a title, and a legend to the plot for clarity
     plt.title('Price with Rolling Maximum Points')
