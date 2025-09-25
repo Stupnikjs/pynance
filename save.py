@@ -20,7 +20,7 @@ def save_pair_csv(pair, interval):
         df_fetch.to_csv(filename, index=False)
         
 def wrapper_save(interval):
-    pair = ["BTCUSDC", "ETHUSDC", "ETHBTC", "LINKUSDC", "LINKBTC"]
+    pair = ["BTCUSDC", "ETHUSDC", "ETHBTC", "LINKUSDC", "LINKBTC", "XRPUSDC"]
     for p in pair:
         save_pair_csv(p, interval)
         

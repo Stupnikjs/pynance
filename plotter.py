@@ -4,6 +4,13 @@ import pandas as pd
 
 
 
+# assume price 1 is bigger 
+def plot_two_price(price_1, price_2, time):
+    ratio = price_1.max() / price_2.max()
+    plt.plot(time, price_1, color="red")
+    plt.plot(time, price_2 * ratio * 0.7,  color="blue")
+    plt.show()
+
 def plot_price_vol(df): 
     fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(10, 8), gridspec_kw={'height_ratios': [9, 1]})
     ax1.plot(df['Close time'], df['Close'], color='blue', label='Closing Price')

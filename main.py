@@ -3,14 +3,14 @@ import connector as conn
 import plotter 
 import numpy as np
 import matplotlib.pyplot as plt
-import os
-from scipy.signal import find_peaks
-from save import wrapper_save
 
-# peaks, prop = find_peaks(df['Close'], distance=50, height=round(df['Close'].max()/4))
-# plotter.show_max_points(peaks, df)
+eth = conn.get_df('ETHUSDC', '1w')
+btc = conn.get_df('BTCUSDC', '1w')
 
-wrapper_save("1w")
+plotter.plot_two_price(btc['Close'], eth['Close'], btc['Close time'])
+
+
+
 
 
 

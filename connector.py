@@ -53,3 +53,7 @@ def klinesToDataFrame(klines) -> DataFrame:
     df[numeric_cols] = df[numeric_cols].astype(float)
     return df
 
+def get_df(pair, interval) -> DataFrame:
+    client = connect_client()
+    data = klines_data(client=client, pair=pair, interval=interval)
+    return klinesToDataFrame(data)
